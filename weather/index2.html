@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>weather</title>
+  <style type="text/css">
+    *{
+    margin: 0;
+    padding: 0;
+      }
+  body{
+   background-image: url("https://img.freepik.com/free-vector/hand-painted-watercolor-nature-background_23-2148941603.jpg?w=2000");
+   color:black;
+    height: 100%;
+    background-position:top center;
+    font-family: Arial, Helvetica, sans-serif;
+    background-size: cover;
+    font-weight: 900; 
+    font-size: bolder;
+  }
+  section{
+  text-align: center;
+  }
+
+div{
+  margin-top: 100px;
+    position: absolute;
+    left:37%;
+    text-align: center;
+    font-size: 1rem;
+    width: 50vh;
+    padding: 1rem;
+    background-color: lightblue;
+    line-height: 2rem;
+    border-radius:3%;
+    opacity: 0.5;
+   border: 2px solid black;  
+}
+ div img{
+  height:100%;
+  font-size:48px;
+}
+img weather-icon.feather{
+  height: 60px;
+  width: auto;
+}
+
+</style>
+</head>
+<body>
+	
+<div>
+<p id="day"><p>
+<p id="name"></p>
+<p id="humidity"></p>
+<p id="temp"></p>
+<p id="pressure"></p>
+<p id="data"></p>
+<img src="" id="img" alt="Weather condition picture">
+<p id="wind_s"></p>
+<p id="wind_d"></p>
+</div>
+<script >
+	// Fetch Wolverhampton weather data from API
+city="new york";
+get(city);
+function get(city){
+  if(localStorage.when != null
+&& parseInt(localStorage.when)> Date.now()) {
+    // Copy one element of response to our HTML paragraph
+    document.getElementById("name").innerHTML = "City name: "+localStorage.city_name+", "+localStorage.country;
+    document.getElementById("humidity").innerHTML= "Humidity: "+localStorage.humidity+"%";
+    document.getElementById("temp").innerHTML = "Current Temperature: "+localStorage.temperature+" °C";
+    document.getElementById("pressure").innerHTML = "Current pressure: "+localStorage.pressure+" hpa";
+    document.getElementById("data").innerHTML = " Current weather: "+localStorage.data;
+    document.getElementById("wind_s").innerHTML = "wind speed: "+localStorage.wind_s+" m/s";
+    document.getElementById("wind_d").innerHTML = "wind direction: "+localStorage.wind_d;
+    weatherIcon = localStorage.img;
+    document.getElementById("img").src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+}
+else{
+fetch("http://localhost/prototype-2/index3.php")
+  
+  // Convert response string to json object
+  .then(response => response.json())
+  .then(response => {
+    // Display whole API response in browser console (take a look at it!)
+    console.log(response);
+
+    let now = new Date().toLocaleDateString('en-us', { weekday:"long", month:"long", day:"numeric"});
+
+            document.querySelector("#day").innerHTML = now;
+                        localStorage.city_name = response.city_name;
+                        localStorage.country = response.country_name;
+                        localStorage.temperature = response.temperature;
+                        localStorage.pressure= response.pressure;
+                        localStorage.data = response.data;
+                        localStorage.wind_s = response.wind_s;
+                        localStorage.wind_d = response.wind_d;
+                        localStorage.img = response.img;
+                        localStorage.humidity = response.humidity;
+                        localStorage.when = Date.now();
+
+                        document.getElementById("name").innerHTML = "City name: "+localStorage.city_name+", "+localStorage.country;
+    document.getElementById("humidity").innerHTML= "Humidity: "+localStorage.humidity+"%";
+    document.getElementById("temp").innerHTML = "Current Temperature: "+localStorage.temperature+" °C";
+    document.getElementById("pressure").innerHTML = "Current pressure: "+localStorage.pressure+" hpa";
+    document.getElementById("data").innerHTML = " Current weather: "+localStorage.data;
+    document.getElementById("wind_s").innerHTML = "wind speed: "+localStorage.wind_s+" m/s";
+    document.getElementById("wind_d").innerHTML = "wind direction: "+localStorage.wind_d;
+    weatherIcon = localStorage.img;
+    document.getElementById("img").src = "http://openweathermap.org/img/wn/" + weatherIcon + "@2x.png";
+  })
+  .catch(err => {
+  
+    // Display errors in console
+    console.log(err);
+    
+})
+};   
+}
+function start(){
+  let Ncity=document.getElementById("getCity").value;
+  get(Ncity);
+  }
+  var today = new Date();
+
+
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+  
+console.log(today);
+ 
+    
+
+
+    
+</script>
+</body>
+</html>
